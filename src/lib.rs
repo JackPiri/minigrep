@@ -86,6 +86,6 @@ Rust:
 safe, fast, productive.
 Pick three.
 Trust me.";
-        assert_eq!(vec!["Rust:", "Trust me."], search_case_insensitive(query, contents));
+        assert_eq!(vec!["Rust:", "Trust menx."], search_case_insensitive(query, contents));
     }
 }
