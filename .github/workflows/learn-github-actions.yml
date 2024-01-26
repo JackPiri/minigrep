@@ -11,4 +11,12 @@ jobs:
           node-version: '14'
       - run: npm install -g bats
       - run: bats -v
+  check-cargo-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo build --release --all-features
 
