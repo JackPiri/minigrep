@@ -19,4 +19,12 @@ jobs:
         with:
           toolchain: stable
       - run: cargo build --release --all-features
+  check-cargo-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo test
 

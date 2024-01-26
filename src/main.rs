@@ -13,8 +13,6 @@ fn main() {
     println!("Searching for {}", config.query);
     println!("In file {}", config.filename);
 
-    print!(a);
-
     match run(config) {
         Ok(_) => {},
         Err(err) => {
