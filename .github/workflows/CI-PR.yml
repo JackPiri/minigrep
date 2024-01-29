@@ -2,9 +2,9 @@ name: CI-PR
 run-name: ${{ github.actor }} is learning GitHub Actions (CI-PR)
 on:
   pull_request:
-    types: [opened, synchronize]
-    branches:
-      - main
+    # types: [opened, synchronize]
+    # branches:
+    #   - main
 jobs:
   check-cargo-test-all:
     runs-on: ubuntu-latest
