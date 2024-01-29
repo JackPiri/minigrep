@@ -10,7 +10,7 @@ on:
     types: [opened, synchronize]
 
 env:
-  RUST_BACKTRACE
+  RUST_BACKTRACE: 1
 
 jobs:
   check-cargo-test-all:
