@@ -21,3 +21,14 @@ fn main() {
         }
     };
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_dummy_more() {
+        let x = 2;
+        assert_eq!(x, 2);
+    }
+}

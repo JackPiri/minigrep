@@ -1,8 +1,15 @@
-[package]
-name = "minigrep"
-version = "0.1.0"
+[workspace.package]
+authors = ["Horizen Labs <admin@horizenlabs.io>"]
 edition = "2021"
+repository = "TODO"
+license = "GPL-3.0-only"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[workspace]
+resolver = "2"
 
-[dependencies]
+members = [
+    "pack1",
+    "pack2",
+]
+
+[workspace.dependencies]
