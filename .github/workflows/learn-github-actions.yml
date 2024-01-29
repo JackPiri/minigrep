@@ -18,12 +18,12 @@ jobs:
         with:
           toolchain: stable
       - run: cargo test --lib --bins --no-fail-fast # for running all unit tests
-on: pull_request
-  check-cargo-test-integration:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-      - run: cargo test --test '*' --no-fail-fast
+# on: pull_request
+#   check-cargo-test-integration:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: actions-rs/toolchain@v1
+#         with:
+#           toolchain: stable
+#       - run: cargo test --test '*' --no-fail-fast
