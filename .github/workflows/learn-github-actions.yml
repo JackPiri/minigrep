@@ -2,15 +2,6 @@ name: learn-github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
 jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
   check-cargo-build:
     runs-on: ubuntu-latest
     steps:
@@ -19,12 +10,20 @@ jobs:
         with:
           toolchain: stable
       - run: cargo build --release --all-features
-  check-cargo-test:
+  check-cargo-test-unit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: cargo test
-
+      - run: cargo test --lib --bins --no-fail-fast # for running all unit tests
+on: [pull_request]
+  check-cargo-test-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo test --test '*' --no-fail-fast
