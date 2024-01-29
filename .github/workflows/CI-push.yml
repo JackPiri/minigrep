@@ -1,6 +1,13 @@
 name: CI-push
+
 run-name: ${{ github.actor }} is learning GitHub Actions (CI-push)
-on: push
+
+on:
+  push:
+
+env:
+  RUST_BACKTRACE: 1
+
 jobs:
   check-cargo-build:
     runs-on: ubuntu-latest
