@@ -29,3 +29,19 @@ jobs:
         with:
           toolchain: stable
       - run: cargo clippy
+  check-cargo-test-integration2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo test '*' --no-fail-fast # for running integration tests
+  check-cargo-clippy2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo clippy

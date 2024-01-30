@@ -24,3 +24,19 @@ jobs:
         with:
           toolchain: stable
       - run: cargo test --lib --bins --no-fail-fast # for running unit tests
+  check-cargo-build2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo build --release --all-features
+  check-cargo-test-unit2:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo test --lib --bins --no-fail-fast # for running unit tests
