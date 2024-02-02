@@ -2,7 +2,7 @@ pub mod hosting1;
 pub mod hosting2;
 
 pub fn front_of_house_f() {
-    let myvar = 9;
+    let myvar = 10;
     let foo = 10;
     println!("foo {}", foo);
     hosting1::add_to_waitlist1();
