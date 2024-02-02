@@ -1,0 +1,39 @@
+name: CI-build&test&lint&coverage
+
+run-name: Workflow performing all CI steps (build, unit tests, integration tests, linting, coverage)
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  RUST_BACKTRACE: 1
+
+jobs:
+  check-cargo-build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build (release)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: cargo build --release --all-features
+      - name: Build (debug)
+        if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+        run: cargo build --all-features
+      - name: Unit tests
+        run: cargo test --lib --bins --no-fail-fast
+      - name: Integration tests
+        run: cargo test --test '*' --no-fail-fast
+      - name: Linting
+        run: cargo clippy
+      # - name: Coverage
+      #   run: cargo tarpaulin --ignore-tests --out Lcov
+        

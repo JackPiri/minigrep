@@ -1,0 +1,23 @@
+name: CI-build-only
+
+run-name: Workflow performing only build
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+env:
+  RUST_BACKTRACE: 1
+
+jobs:
+  check-cargo-test-integration:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+      - name: Build (debug)
+        run: cargo build --all-features
