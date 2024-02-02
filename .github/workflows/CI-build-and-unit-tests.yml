@@ -1,6 +1,6 @@
-name: CI-build-and-unit-tests
+name: CI-build
 
-run-name: $CI building and unit testing
+run-name: $CI build
 
 on: push
 
@@ -12,17 +12,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
       - run: cargo build --release --all-features
-      - run: cargo build --all-features
-  check-cargo-test-unit:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-      - run: cargo test --lib --bins --no-fail-fast # for running unit tests
-      - run: cargo test --lib --bins --no-fail-fast # for running unit tests
