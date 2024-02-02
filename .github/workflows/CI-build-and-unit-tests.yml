@@ -3,11 +3,6 @@ name: CI-build
 run-name: $CI build
 
 on: workflow_dispatch
-  inputs:
-    logLevel:
-      description: 'Log level'
-      required: true
-      default: 'warning'
 
 env:
   RUST_BACKTRACE: 1
