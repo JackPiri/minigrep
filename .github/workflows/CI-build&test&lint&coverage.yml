@@ -22,6 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
+        if: success() || failure()
         uses: actions/checkout@v4
       - name: Build (release)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -30,12 +31,16 @@ jobs:
         if: github.event_name != 'push' || github.ref != 'refs/heads/main'
         run: cargo build --all-features
       - name: Unit tests
+        if: success() || failure()
         run: cargo test --lib --bins --no-fail-fast
       - name: Integration tests
+        if: success() || failure()
         run: cargo test --test '*' --no-fail-fast
       - name: Linting
+        if: success() || failure()
         run: cargo clippy
       - name: Coverage
+        if: success() || failure()
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.15.0'
