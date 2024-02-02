@@ -34,11 +34,11 @@ jobs:
       - name: Integration tests
         run: cargo test --test '*' --no-fail-fast
       - name: Linting
+        if: matrix.os == 'ubuntu-latest'
         run: cargo clippy
       - name: Coverage
+        if: matrix.os == 'ubuntu-latest'
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.15.0'
-          args: '--ignore-tests --out Lcov'
-        # run: cargo tarpaulin --ignore-tests --out Lcov
-        
+          args: '--ignore-tests --out Lcov'      
