@@ -34,6 +34,9 @@ jobs:
         run: cargo test --test '*' --no-fail-fast
       - name: Linting
         run: cargo clippy
-      # - name: Coverage
-      #   run: cargo tarpaulin --ignore-tests --out Lcov
+      - name: Coverage
+        uses: actions-rs/tarpaulin@v0.1
+        with:
+          args: '--ignore-tests --out Lcov'
+        # run: cargo tarpaulin --ignore-tests --out Lcov
         
