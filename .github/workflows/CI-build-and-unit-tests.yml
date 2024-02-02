@@ -9,6 +9,10 @@ env:
 
 jobs:
   check-cargo-build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - run: cargo build --release --all-features
+        - uses: actions/checkout@v4
+        - run: cargo build --release --all-features
