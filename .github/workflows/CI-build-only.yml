@@ -15,7 +15,8 @@ jobs:
       abort: ${{ steps.branchCheck.outputs.abort }}
     runs-on: ${{ matrix.os }}
     steps:
-      - run: |
+      - name: step1
+        run: |
           $outstandingPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
           $triggeringBranch = $env:triggeringBranch 
           if (($outstandingPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
@@ -29,7 +30,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: pwsh
         id: branchCheck
-
+      - name: step2
+        run: echo $GITHUB_OUTPUT.abort
 
 
 
