@@ -19,6 +19,8 @@ jobs:
           echo "ABORT=$abort" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
           gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
           $outstandingPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
+          echo "the triggeringBranch is $Env:triggeringBranch"
+          echo "triggeringBranch is $triggeringBranch"
           $triggeringBranch = $env:triggeringBranch 
           if (($outstandingPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
           {
