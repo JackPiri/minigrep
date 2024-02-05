@@ -14,7 +14,6 @@ jobs:
     steps:
       - run: |
           echo HitPoint1
-          $listOfPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
           echo HitPoint2
         env:
           repository: ${{ github.repository }}
