@@ -36,10 +36,9 @@ jobs:
     - name: step2
       run: echo "ABORT is $Env:ABORT"
       shell: pwsh
-    # - name: step2
-    #   if: $Env:ABORT == true
-    #   run: echo "...running..."
-    #   shell: pwsh
+    - name: step2
+      if: env.MY_ENV_VAR == 'true'
+      run: echo "...running..."
 
 
 
