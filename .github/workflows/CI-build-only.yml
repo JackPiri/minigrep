@@ -1,15 +1,11 @@
 name: CI-build-only
-
 run-name: Workflow performing only build
-
 on:
   push:
     branches-ignore:
       - main
-
 env:
   RUST_BACKTRACE: 1
-
 jobs:
   check-not-PR:
     outputs:
@@ -17,12 +13,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - run: |
+          echo HitPoint1
           $listOfPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
+          echo HitPoint2
           $triggeringBranch = $env:triggeringBranch 
+          echo HitPoint3
           if (($listOfPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
           {
             "abort=true" >> $env:GITHUB_OUTPUT
           }
+          echo HitPoint4
         env:
           repository: ${{ github.repository }}
           triggeringBranch: ${{ github.ref }}
