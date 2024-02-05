@@ -15,24 +15,30 @@ jobs:
       abort: ${{ steps.branchCheck.outputs.abort }}
     runs-on: ${{ matrix.os }}
     steps:
-      - name: step1
-        run: |
-          $outstandingPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
-          $triggeringBranch = $env:triggeringBranch 
-          if (($outstandingPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
-          {
-            "abort=true" >> $env:abort
-          }
-          echo $abort
-        env:
-          repository: ${{ github.repository }}
-          triggeringBranch: ${{ github.ref }}
-          GH_TOKEN: ${{ github.token }}
-        shell: pwsh
-        id: branchCheck
-      - name: step2
-        run: echo $abort
-        shell: bash
+    - name: Set environment variable
+      run: echo "MY_VAR=my_value" >> $GITHUB_ENV
+      shell: pwsh
+    - name: Echo environment variable
+      run: echo $MY_VAR
+      shell: pwsh
+      # - name: step1
+      #   run: |
+      #     $outstandingPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
+      #     $triggeringBranch = $env:triggeringBranch 
+      #     if (($outstandingPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
+      #     {
+      #       "abort=true" >> $env:abort
+      #     }
+      #     echo $abort
+      #   env:
+      #     repository: ${{ github.repository }}
+      #     triggeringBranch: ${{ github.ref }}
+      #     GH_TOKEN: ${{ github.token }}
+      #   shell: pwsh
+      #   id: branchCheck
+      # - name: step2
+      #   run: echo $abort
+      #   shell: bash
 
 
 
