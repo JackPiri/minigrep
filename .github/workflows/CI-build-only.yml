@@ -11,10 +11,27 @@ env:
   RUST_BACKTRACE: 1
 
 jobs:
+  check-not-PR:
+    outputs:
+      abort: ${{ steps.branchCheck.outputs.abort }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: |
+          $listOfPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
+          $triggeringBranch = $env:triggeringBranch 
+          if (($listOfPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
+          {
+            "abort=true" >> $env:GITHUB_OUTPUT
+          }
+        env:
+          repository: ${{ github.repository }}
+          triggeringBranch: ${{ github.ref }}
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        id: branchCheck
   build-only:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+    needs: check-not-PR
+    if: ${{ needs.check-not-PR.outputs.abort != 'true' }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout branch
