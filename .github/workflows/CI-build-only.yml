@@ -16,13 +16,6 @@ jobs:
           echo HitPoint1
           $listOfPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
           echo HitPoint2
-          $triggeringBranch = $env:triggeringBranch 
-          echo HitPoint3
-          if (($listOfPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
-          {
-            "abort=true" >> $env:GITHUB_OUTPUT
-          }
-          echo HitPoint4
         env:
           repository: ${{ github.repository }}
           triggeringBranch: ${{ github.ref }}
