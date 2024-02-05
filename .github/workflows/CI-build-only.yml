@@ -15,26 +15,30 @@ jobs:
       abort: ${{ steps.branchCheck.outputs.abort }}
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Check not a PR
-        run: |
-          $listOfPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
-          echo $repository
-          $triggeringBranch = $env:triggeringBranch
-          echo $triggeringBranch
-          if (($listOfPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
-          {
-            echo "abort=true" >> $GITHUB_ENV
-          }
-          echo "value $abort"
-        env:
-          repository: ${{ github.repository }}
-          triggeringBranch: ${{ github.ref }}
-          GH_TOKEN: ${{ github.token }}
-        shell: pwsh
-        id: branchCheck
-      - name: Checkout branch
-        if: env.abort == 'true'
-        uses: actions/checkout@v4
-      - name: Checkout branch
-        if: env.abort == 'true'
-        run: cargo build --all-features
+    - name: Set environment variable
+      run: echo "MY_VAR=my_value" >> $GITHUB_ENV
+    - name: Echo environment variable
+      run: echo $MY_VAR
+      # - name: Check not a PR
+      #   run: |
+      #     $listOfPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
+      #     echo $repository
+      #     $triggeringBranch = $env:triggeringBranch
+      #     echo $triggeringBranch
+      #     if (($listOfPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
+      #     {
+      #       echo "abort=true" >> $GITHUB_ENV
+      #     }
+      #     echo "value $abort"
+      #   env:
+      #     repository: ${{ github.repository }}
+      #     triggeringBranch: ${{ github.ref }}
+      #     GH_TOKEN: ${{ github.token }}
+      #   shell: pwsh
+      #   id: branchCheck
+      # - name: Checkout branch
+      #   if: env.abort == 'true'
+      #   uses: actions/checkout@v4
+      # - name: Checkout branch
+      #   if: env.abort == 'true'
+      #   run: cargo build --all-features
