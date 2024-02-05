@@ -21,9 +21,9 @@ jobs:
           $triggeringBranch = $env:triggeringBranch 
           if (($outstandingPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
           {
-            "abort=true" >> $env:GITHUB_OUTPUT
+            "abort=true" >> $env:abort
           }
-          echo $GITHUB_OUTPUT.abort
+          echo $abort
         env:
           repository: ${{ github.repository }}
           triggeringBranch: ${{ github.ref }}
@@ -31,7 +31,8 @@ jobs:
         shell: pwsh
         id: branchCheck
       - name: step2
-        run: echo $GITHUB_OUTPUT.abort
+        run: echo $abort
+        shell: bash
 
 
 
