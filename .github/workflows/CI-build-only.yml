@@ -18,7 +18,9 @@ jobs:
       - name: Check not a PR
         run: |
           $listOfPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
+          echo ${{ env:repository }}
           $triggeringBranch = $env:triggeringBranch
+          echo ${{ env:triggeringBranch }}
           if (($listOfPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
           {
             "abort=true" >> $GITHUB_ENV
