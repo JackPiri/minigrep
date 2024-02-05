@@ -21,21 +21,16 @@ jobs:
     #   run: echo $MY_VAR
       - name: Check not a PR
         run: |
-          $outstandingPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
-          $triggeringBranch = $env:triggeringBranch 
-          if (($outstandingPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
-          {
-            echo "abort=true" >> $GITHUB_ENV
-          }
+          pr_branches=$(gh pr list --json headRefName --repo $GITHUB_REPOSITORY)
+          if [[ $(echo "$pr_branches" | jq -r --arg GITHUB_REF '.[].headRefName | select(. == $GITHUB_REF)') ]]; then
+            echo "This push is associated with a pull request. Skipping the job."
+            echo "abort=true" >> "$GITHUB_OUTPUT"
+          fi
         env:
-          repository: ${{ github.repository }}
-          triggeringBranch: ${{ github.ref }}
           GH_TOKEN: ${{ github.token }}
       - name: Echo environment variable
         run: echo $abort
         env:
-          repository: ${{ github.repository }}
-          triggeringBranch: ${{ github.ref }}
           GH_TOKEN: ${{ github.token }}
       #   env:
       #     repository: ${{ github.repository }}
