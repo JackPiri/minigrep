@@ -11,8 +11,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-    outputs:
-      abort: ${{ steps.branchCheck.outputs.abort }}
     runs-on: ${{ matrix.os }}
     steps:
       - name: step1
@@ -36,7 +34,7 @@ jobs:
       - name: step2
         if: $Env:ABORT == true
         run: echo "...running..."
-        shell: bash
+        shell: pwsh
 
 
 
