@@ -11,36 +11,16 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-    outputs:
-      abort: ${{ steps.branchCheck.outputs.abort }}
     runs-on: ${{ matrix.os }}
     steps:
     - name: Set environment variable
       run: |
-          $version = "1.0.0" # Replace this with your logic to get the version
-          echo "VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+        $version = "1.0.0" # Replace this with your logic to get the version
+        echo "VERSION=$version" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
       shell: pwsh
     - name: Echo environment variable
       run: echo "Version is $Env:VERSION"
       shell: pwsh
-      # - name: step1
-      #   run: |
-      #     $outstandingPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
-      #     $triggeringBranch = $env:triggeringBranch 
-      #     if (($outstandingPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
-      #     {
-      #       "abort=true" >> $env:abort
-      #     }
-      #     echo $abort
-      #   env:
-      #     repository: ${{ github.repository }}
-      #     triggeringBranch: ${{ github.ref }}
-      #     GH_TOKEN: ${{ github.token }}
-      #   shell: pwsh
-      #   id: branchCheck
-      # - name: step2
-      #   run: echo $abort
-      #   shell: bash
 
 
 
