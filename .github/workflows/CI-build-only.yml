@@ -30,11 +30,11 @@ jobs:
       id: branchCheck
     - name: step2
       run: echo "ABORT is $Env:ABORT"
-      shell: bash
+      shell: pwsh
     - name: step2
       if: $Env:ABORT == true
       run: echo "...running..."
-      shell: bash
+      shell: pwsh
 
 
 
