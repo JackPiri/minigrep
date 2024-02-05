@@ -1,23 +1,35 @@
 name: CI-build-only
-
 run-name: Workflow performing only build
-
 on:
   push:
     branches-ignore:
       - main
-
 env:
   RUST_BACKTRACE: 1
-
 jobs:
-  check-cargo-test-integration:
+  build-only:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout target branch
-        uses: actions/checkout@v4
-      - name: Build (debug)
-        run: cargo build --all-features
+    - name: Check not a PR
+      env:
+        repository: ${{ github.repository }}
+        triggeringBranch: ${{ github.ref }}
+        GH_TOKEN: ${{ github.token }}
+      run: |
+          $listOfPRsBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
+          $triggeringBranch = $env:triggeringBranch 
+          if (($listOfPRsBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
+          {
+            $abort = "true"
+            echo "ABORT=$abort" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          }         
+      shell: pwsh
+    - name: Checkout branch
+      if: env.ABORT != 'true'
+      uses: actions/checkout@v4
+    - name: Build (debug)
+      if: env.ABORT != 'true'
+      run: cargo build --all-features

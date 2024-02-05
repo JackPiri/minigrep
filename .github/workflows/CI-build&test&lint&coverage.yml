@@ -14,14 +14,14 @@ env:
   RUST_BACKTRACE: 1
 
 jobs:
-  check-cargo-build:
+  build-test-lint-coverage:
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout
+      - name: Checkout branch
         uses: actions/checkout@v4
       - name: Build (release)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
