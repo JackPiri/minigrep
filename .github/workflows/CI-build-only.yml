@@ -11,7 +11,7 @@ env:
   RUST_BACKTRACE: 1
 
 jobs:
-  check-cargo-test-integration:
+  build-only:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]

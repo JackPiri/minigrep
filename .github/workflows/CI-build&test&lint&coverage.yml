@@ -14,7 +14,7 @@ env:
   RUST_BACKTRACE: 1
 
 jobs:
-  check-cargo-build:
+  build-test-lint-coverage:
     strategy:
       fail-fast: false
       matrix:
