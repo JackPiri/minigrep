@@ -18,12 +18,12 @@ jobs:
       - name: Check not a PR
         run: |
           $listOfPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
-          $triggeringBranch = $env:triggeringBranch 
+          $triggeringBranch = $env:triggeringBranch
           if (($listOfPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
           {
             "abort=true" >> $GITHUB_ENV
           }
-          echo "value ${{ env.Failures }}"
+          echo "value ${{ env.abort }}"
         env:
           repository: ${{ github.repository }}
           triggeringBranch: ${{ github.ref }}
@@ -31,8 +31,8 @@ jobs:
         shell: pwsh
         id: branchCheck
       - name: Checkout branch
-        if: env.abort
+        if: env.abort == 'true'
         uses: actions/checkout@v4
       - name: Checkout branch
-        if: env.abort
-        uses: actions/checkout@v4
+        if: env.abort == 'true'
+        run: cargo build --all-features
