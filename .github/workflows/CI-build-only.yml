@@ -13,71 +13,23 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Set environment variable
-      run: |
-          $abort = "false"
-          echo "ABORT=$abort" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-          gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
-          $outstandingPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
-          echo "the triggeringBranch is $Env:triggeringBranch"
-          echo "triggeringBranch is $triggeringBranch"
-          $triggeringBranch = $env:triggeringBranch 
-          if (($outstandingPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
-          {
-            $abort = "true"
-            echo "ABORT=$abort" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-          }         
+    - name: Check not a PR
       env:
         repository: ${{ github.repository }}
         triggeringBranch: ${{ github.ref }}
         GH_TOKEN: ${{ github.token }}
+      run: |
+          $listOfPRsBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
+          $triggeringBranch = $env:triggeringBranch 
+          if (($listOfPRsBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
+          {
+            $abort = "true"
+            echo "ABORT=$abort" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+          }         
       shell: pwsh
-      id: branchCheck
-    - name: step2
-      run: echo "ABORT is $Env:ABORT"
-      shell: pwsh
-    - name: step2
+    - name: Checkout branch
       if: env.ABORT != 'true'
-      run: echo "...running..."
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # # - name: Set environment variable
-    # #   run: echo "MY_VAR=my_value" >> $GITHUB_ENV
-    # # - name: Echo environment variable
-    # #   run: echo $MY_VAR
-    #   - name: Check not a PR
-    #     run: |
-    #       pr_branches=$(gh pr list --json headRefName --repo $GITHUB_REPOSITORY)
-    #       if [[ $(echo "$pr_branches" | jq -r --arg GITHUB_REF '.[].headRefName | select(. == $GITHUB_REF)') ]]; then
-    #         echo "This push is associated with a pull request. Skipping the job."
-    #         echo "abort=true" >> "$GITHUB_OUTPUT"
-    #       fi
-    #     env:
-    #       GH_TOKEN: ${{ github.token }}
-    #   - name: Echo environment variable
-    #     run: echo $abort
-    #     env:
-    #       GH_TOKEN: ${{ github.token }}
-    #   #   env:
-    #   #     repository: ${{ github.repository }}
-    #   #     triggeringBranch: ${{ github.ref }}
-    #   #     GH_TOKEN: ${{ github.token }}
-    #   #   shell: pwsh
-    #   #   id: branchCheck
-    #   # - name: Checkout branch
-    #   #   if: env.abort == 'true'
-    #   #   uses: actions/checkout@v4
-    #   # - name: Checkout branch
-    #   #   if: env.abort == 'true'
-    #   #   run: cargo build --all-features
+      uses: actions/checkout@v4
+    - name: Build (debug)
+      if: env.ABORT != 'true'
+      run: cargo build --all-features
