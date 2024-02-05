@@ -7,7 +7,7 @@ on:
 env:
   RUST_BACKTRACE: 1
 jobs:
-  check-not-PR:
+  build-only:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -15,29 +15,24 @@ jobs:
       abort: ${{ steps.branchCheck.outputs.abort }}
     runs-on: ${{ matrix.os }}
     steps:
-      - run: |
-          echo HitPoint1
+      - name: Check not a PR
+        run: |
           $listOfPrBranches = & gh pr list --json headRefName --repo $env:repository | ConvertFrom-Json
-          echo HitPoint2
           $triggeringBranch = $env:triggeringBranch 
-          echo HitPoint3
           if (($listOfPrBranches | ?{ "refs/heads/$($_.headRefName)" -eq "$triggeringBranch" }).count -gt 0)
           {
-            "abort=true" >> $env:GITHUB_OUTPUT
+            "abort=true" >> $GITHUB_ENV
           }
-          echo HitPoint4
+          echo "value ${{ env.Failures }}"
         env:
           repository: ${{ github.repository }}
           triggeringBranch: ${{ github.ref }}
           GH_TOKEN: ${{ github.token }}
         shell: pwsh
         id: branchCheck
-  # build-only:
-  #   needs: check-not-PR
-  #   if: ${{ needs.check-not-PR.outputs.abort != 'true' }}
-  #   runs-on: ${{ matrix.os }}
-  #   steps:
-  #     - name: Checkout branch
-  #       uses: actions/checkout@v4
-  #     - name: Build (debug)
-  #       run: cargo build --all-features
+      - name: Checkout branch
+        if: env.abort
+        uses: actions/checkout@v4
+      - name: Checkout branch
+        if: env.abort
+        uses: actions/checkout@v4
