@@ -29,6 +29,14 @@ jobs:
       - name: Build (debug)
         if: github.event_name != 'push' || github.ref != 'refs/heads/main'
         run: cargo build --all-features
+      - name: Set up cargo cache
+        uses: actions/cache@v4
+        continue-on-error: false
+        with:
+          path: |
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-
       - name: Unit tests
         run: cargo test --lib --bins --no-fail-fast
       - name: Integration tests
