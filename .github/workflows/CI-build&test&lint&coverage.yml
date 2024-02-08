@@ -1,6 +1,6 @@
 name: CI-build&test&lint&coverage
 
-run-name: Workflow performing all CI steps (build, unit tests, integration tests, linting, coverage)
+run-name: "Workflow performing all CI steps: build, unit tests, integration tests, linting, coverage"
 
 on:
   pull_request:
