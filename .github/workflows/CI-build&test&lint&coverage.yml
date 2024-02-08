@@ -21,8 +21,12 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Dir (pre)
+        run: echo $PWD
       - name: Checkout branch
         uses: actions/checkout@v4
+      - name: Dir (post)
+        run: echo $PWD
       - name: Build (release)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: cargo build --release --all-features
