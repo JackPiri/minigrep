@@ -52,5 +52,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         uses: actions-rs/tarpaulin@v0.1
         with:
-          version: '0.15.0'
-          args: '--ignore-tests --out Lcov'      
+          # version: '0.15.0'
+          version: 'latest'
+          out-type: 'Stdout'
+          args: '--ignore-tests'
