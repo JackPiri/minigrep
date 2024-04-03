@@ -25,6 +25,7 @@ jobs:
         run: |
           echo "Tag name from GITHUB_REF: $GITHUB_REF"
           echo "Tag name from github.ref: ${{ github.ref }}"
+          echo "Tag name from github.ref: ${{ github.ref_name }}"
           TAG_NAME="${{ github.ref_name }}"
           DOCKER_TAG_NAME="${TAG_NAME:1}"
           echo "${TAG_NAME}"-"${DOCKER_TAG_NAME}"
