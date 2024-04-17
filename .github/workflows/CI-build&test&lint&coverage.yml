@@ -4,7 +4,7 @@ run-name: "Workflow performing all CI steps: build, unit tests, integration test
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened]
   push:
     branches:
       - main
@@ -52,7 +52,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         uses: actions-rs/tarpaulin@v0.1
         with:
-          version: '0.23.0'
+          version: '0.22.0'
           # version: '0.15.0' # OK
           # version: 'latest' # KO
           out-type: 'Stdout'
