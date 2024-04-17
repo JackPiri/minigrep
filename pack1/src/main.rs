@@ -1,6 +1,6 @@
+use minigrep::*;
 use std::env;
 use std::process;
-use minigrep::*;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -10,7 +10,7 @@ fn main() {
         process::exit(1);
     });
     match run(config) {
-        Ok(_) => {},
+        Ok(_) => {}
         Err(err) => {
             eprintln!("Application error: {}", err);
             process::exit(1);
