@@ -18,17 +18,19 @@ jobs:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Check Label
-        if: contains(github.event.pull_request.labels.*.name, 'READY_TO_MERGE')
-        run: echo "The label value is ${{ github.event.pull_request.labels.*.name }}"
-      - name: Dir (pre)
-        run: echo $PWD
       - name: Checkout branch
         uses: actions/checkout@v4
       - name: Print All Environment Variables
         run: env
-      - name: Dir (post)
-        run: echo $PWD
+      - name: Get sha
+        run: |
+          SHA=$(curl -s "https://api.github.com/repos/JackPiri/minigrep/pulls?state=open" | jq '.[] | select(.head.label == "JackPiri:${{ env.GITHUB_HEAD_REF }}")' | jq '.head.sha')
+          echo $SHA
+          SHA="${SHA:1:-1}"
+          echo $SHA
+          echo "SHA=${{ github.event.inputs.sha }}" >> $GITHUB_ENV
+      - name: Check sha
+        run: echo $SHA
       - name: Build (release)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: cargo build --release --all-features
@@ -59,3 +61,10 @@ jobs:
           # version: 'latest' # KO
           out-type: 'Stdout'
           args: '--ignore-tests'
+      - name: Set Result
+        uses: myrotvorets/set-commit-status-action@master
+        if: always()
+        with:
+          sha: ${{ steps.comment-branch.outputs.head_sha }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
