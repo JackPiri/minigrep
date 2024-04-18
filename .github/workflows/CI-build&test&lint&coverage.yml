@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Print All Environment Variables
         run: env
+        
       - name: Dir (post)
         run: echo $PWD
       - name: Build (release)
