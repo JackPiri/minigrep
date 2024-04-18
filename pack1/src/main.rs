@@ -24,7 +24,7 @@ mod tests {
 
     #[test]
     fn test_dummy_more() {
-        let x = 4;
+        let x = 5;
         assert_eq!(x, 4);
     }
 }
