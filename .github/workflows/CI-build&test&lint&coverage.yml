@@ -66,10 +66,10 @@ jobs:
           # version: 'latest' # KO
           out-type: 'Stdout'
           args: '--ignore-tests'
-      - name: Set Result
+      - name: Set latest commit status
         uses: myrotvorets/set-commit-status-action@master
         if: always()
         with:
-          sha: ${{ steps.comment-branch.outputs.head_sha }}
+          sha: $SHA
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
