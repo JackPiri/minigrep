@@ -68,10 +68,12 @@ jobs:
       - name: Check sha
         run: |
           echo $SHA
+          echo ${{ env.SHA }}
       - name: Set latest commit status
         uses: myrotvorets/set-commit-status-action@master
         if: env.SHA != '' # if workflow fails this is not triggered
         with:
-          sha: $SHA
+          # sha: $SHA
+          sha: ${{ env.SHA }}
           token: ${{ secrets.GITHUB_TOKEN }}
           status: ${{ job.status }}
