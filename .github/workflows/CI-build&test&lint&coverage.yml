@@ -60,7 +60,7 @@ jobs:
           echo "GITHUB_REF_NAME (again) is ${{ env.GITHUB_REF_NAME }}"
           echo "github.ref_name is ${{ github.ref_name }}"
           echo "github.ref is ${{ github.ref }}"
-          SHA=$(curl -s "https://api.github.com/repos/JackPiri/minigrep/pulls?state=open" | jq ".[] | select(.head.label == \"JackPiri:${{ env.GITHUB_REF_NAME }}\")" | jq ".head.sha")
+          SHA=$(curl -s "https://api.github.com/repos/JackPiri/minigrep/pulls?state=open" | jq ".[] | select(.head.label == \"JackPiri:${{ github.ref_name }}\")" | jq ".head.sha")
           echo SHA is $SHA
           SHA="${SHA:1:-1}"
           echo SHA is $SHA
