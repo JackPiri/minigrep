@@ -60,10 +60,6 @@ jobs:
           echo SHA is $SHA
           SHA="${SHA:1:-1}"
           echo SHA is $SHA
-          SHA=$(curl -s "https://api.github.com/repos/JackPiri/minigrep/pulls?state=open" | jq ".[] | select(.head.label == \"JackPiri:gp/tryCI3\")" | jq ".head.sha")
-          echo SHA is $SHA
-          SHA="${SHA:1:-1}"
-          echo SHA is $SHA
           echo "SHA=$SHA" >> $GITHUB_ENV
       - name: Check sha
         run: |
