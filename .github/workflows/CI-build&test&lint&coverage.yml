@@ -33,7 +33,7 @@ jobs:
           echo SHA is $SHA
           SHA="${SHA:1:-1}"
           echo SHA is $SHA
-          echo "SHA=${{ github.event.inputs.sha }}" >> $GITHUB_ENV
+          echo "SHA=$SHA" >> $GITHUB_ENV
       - name: Check sha
         run: echo $SHA
       - name: Build (release)
