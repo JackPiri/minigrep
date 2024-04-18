@@ -24,11 +24,11 @@ jobs:
         run: env
       - name: Get sha
         run: |
-          echo ${{ env.GITHUB_HEAD_REF }}
+          echo GITHUB_HEAD_REF is ${{ env.GITHUB_HEAD_REF }}
           SHA=$(curl -s "https://api.github.com/repos/JackPiri/minigrep/pulls?state=open" | jq ".[] | select(.head.label == \"JackPiri:${{ env.GITHUB_HEAD_REF }}\")" | jq ".head.sha")
-          echo $SHA
+          echo SHA is $SHA
           SHA="${SHA:1:-1}"
-          echo $SHA
+          echo SHA is $SHA
           echo "SHA=${{ github.event.inputs.sha }}" >> $GITHUB_ENV
       - name: Check sha
         run: echo $SHA
