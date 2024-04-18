@@ -4,7 +4,7 @@ run-name: "Workflow performing all CI steps: build, unit tests, integration test
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, labeled]
   workflow_dispatch:
 
 env:
@@ -18,6 +18,9 @@ jobs:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Check Label
+        if: contains(github.event.pull_request.labels.*.name, 'READY_TO_MERGE')
+        run: echo "The label value is ${{ github.event.pull_request.labels.*.name }}"
       - name: Dir (pre)
         run: echo $PWD
       - name: Checkout branch
