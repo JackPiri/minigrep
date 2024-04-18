@@ -14,9 +14,6 @@ jobs:
   build-test-lint-coverage:
     strategy:
       fail-fast: false
-      matrix:
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -41,10 +38,8 @@ jobs:
       - name: Integration tests
         run: cargo test --test '*' --no-fail-fast
       - name: Linting
-        if: matrix.os == 'ubuntu-latest'
         run: cargo clippy
       - name: Coverage
-        if: matrix.os == 'ubuntu-latest'
         uses: actions-rs/tarpaulin@v0.1
         with:
           version: '0.22.0'
