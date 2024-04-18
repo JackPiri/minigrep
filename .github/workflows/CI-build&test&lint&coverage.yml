@@ -55,8 +55,8 @@ jobs:
 
       - name: Get sha
         run: |
-          echo GITHUB_HEAD_REF is ${{ env.GITHUB_HEAD_REF }}
-          SHA=$(curl -s "https://api.github.com/repos/JackPiri/minigrep/pulls?state=open" | jq ".[] | select(.head.label == \"JackPiri:${{ env.GITHUB_HEAD_REF }}\")" | jq ".head.sha")
+          echo GITHUB_REF_NAME is ${{ env.GITHUB_REF_NAME }}
+          SHA=$(curl -s "https://api.github.com/repos/JackPiri/minigrep/pulls?state=open" | jq ".[] | select(.head.label == \"JackPiri:${{ env.GITHUB_REF_NAME }}\")" | jq ".head.sha")
           echo SHA is $SHA
           SHA="${SHA:1:-1}"
           echo SHA is $SHA
