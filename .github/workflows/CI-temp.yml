@@ -1,0 +1,23 @@
+name: CI-temp
+run-name: "Workflow performing CI check"
+
+on:
+  push:
+    tags:
+      - 'v[0-9].[0-9].[0-9]*'
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  RUST_BACKTRACE: 1
+
+jobs:
+  docker:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Print hello
+        run: echo Hello
