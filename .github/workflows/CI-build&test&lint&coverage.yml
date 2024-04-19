@@ -54,16 +54,20 @@ jobs:
           echo "GITHUB_REF_NAME is ${{ env.GITHUB_REF_NAME }}"
           env
           echo "GITHUB_REF_NAME (again) is ${{ env.GITHUB_REF_NAME }}"
+
+          BRANCH_NAME=${{ github.head_ref || github.ref_name }}
+          echo BRANCH_NAME is ${BRANCH_NAME}
+
           echo "github.ref_name is ${{ github.ref_name }}"
           echo "github.ref is ${{ github.ref }}"
-          SHA=$(curl -s "https://api.github.com/repos/JackPiri/minigrep/pulls?state=open" | jq ".[] | select(.head.label == \"JackPiri:${{ github.ref_name }}\")" | jq ".head.sha")
-          echo SHA is $SHA
+          SHA=$(curl -s "https://api.github.com/repos/JackPiri/minigrep/pulls?state=open" | jq ".[] | select(.head.label == \"JackPiri:${BRANCH_NAME}\")" | jq ".head.sha")
+          echo SHA is ${SHA}
           SHA="${SHA:1:-1}"
-          echo SHA is $SHA
-          echo "SHA=$SHA" >> $GITHUB_ENV
+          echo SHA is ${SHA}
+          echo "SHA=${SHA}" >> $GITHUB_ENV
       - name: Check sha
         run: |
-          echo $SHA
+          echo ${SHA}
           echo ${{ env.SHA }}
       - name: Set latest commit status
         uses: myrotvorets/set-commit-status-action@master
