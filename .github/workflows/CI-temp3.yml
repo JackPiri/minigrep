@@ -4,7 +4,7 @@ run-name: "Workflow performing CI check"
 on:
   push:
     tags:
-      - 'v[0-9].[0-9].[0-9]*'
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
   workflow_dispatch:
 
 env:
@@ -17,5 +17,5 @@ jobs:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Print hello
-        run: echo Hello
+      - name: Print hello 3
+        run: echo Hello 3
