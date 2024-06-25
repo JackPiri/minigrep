@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Print wksp
         run: echo ${GITHUB_WORKSPACE}
+      - name: Print dirs
+        run: ls -R
       - name: Script
         run: |
           #!/bin/bash
@@ -35,5 +37,5 @@ jobs:
           echo N0-B
           echo "E2E_TEST_SUMMARY=*E2E Tests*\n${passed_formatted}, ${failed_formatted}, ${runtime_formatted}" >> $GITHUB_ENV
           echo N0-A
-      # - name: Summarize Test Data
-      #   run: ${GITHUB_WORKSPACE}/.github/scripts/summarize_tests.sh
+      - name: Summarize Test Data
+        run: ${GITHUB_WORKSPACE}/.github/scripts/summarize_tests.sh
