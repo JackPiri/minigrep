@@ -19,3 +19,5 @@ jobs:
     steps:
       - name: Print hello
         run: echo Hello
+      - name: Summarize Test Data
+        run: ./.github/scripts/summarize_tests.sh
