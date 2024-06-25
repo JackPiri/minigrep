@@ -20,4 +20,4 @@ jobs:
       - name: Print hello
         run: echo Hello
       - name: Summarize Test Data
-        run: ./.github/scripts/summarize_tests.sh
+        run: ${GITHUB_WORKSPACE}/.github/scripts/summarize_tests.sh
