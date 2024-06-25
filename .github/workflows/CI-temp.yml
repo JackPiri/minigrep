@@ -23,6 +23,12 @@ jobs:
         run: echo ${GITHUB_WORKSPACE}
       - name: Print dirs
         run: ls -R
+      - name: Print stuff
+        run: |
+          VAR1=${GITHUB_REPOSITORY}
+          echo VAR1 is ${VAR1}
+          VAR2=${{ github.repository }}
+          echo VAR1 is ${VAR1}
       # - name: Script
       #   run: |
       #     #!/bin/bash
