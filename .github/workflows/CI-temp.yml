@@ -28,7 +28,11 @@ jobs:
           VAR1=${GITHUB_REPOSITORY}
           echo VAR1 is ${VAR1}
           VAR2=${{ github.repository }}
-          echo VAR1 is ${VAR1}
+          echo VAR2 is ${VAR2}
+          VAR3=${GITHUB_REPOSITORY_OWNER}
+          echo VAR3 is ${VAR3}
+          VAR4=${{ github.repository_owner }}
+          echo VAR4 is ${VAR4}
       # - name: Script
       #   run: |
       #     #!/bin/bash
