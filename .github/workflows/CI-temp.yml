@@ -42,10 +42,10 @@ jobs:
                     "https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls?state=open")         
           LAST_COMMIT_SHA=$(echo ${ALL_PRS} | jq ".[] | select(.head.label == \"${GITHUB_REPOSITORY_OWNER}:${BRANCH_NAME}\")" | jq -r ".head.sha")
           echo LAST_COMMIT_SHA is ${LAST_COMMIT_SHA}
-          echo "LAST_COMMIT_SHA=${LAST_COMMIT_SHA}" >> $GITHUB_ENV
+          echo "LAST_COMMIT_SHA=${LAST_COMMIT_SHA}" >> $GITHUB_OUTPUT
           PR_LINK=$(echo ${ALL_PRS} | jq ".[] | select(.head.label == \"${GITHUB_REPOSITORY_OWNER}:${BRANCH_NAME}\")" | jq -r ".html_url")
           echo PR_LINK is ${PR_LINK}
-          echo "PR_LINK=${PR_LINK}" >> $GITHUB_ENV
+          echo "PR_LINK=${PR_LINK}" >> $GITHUB_OUTPUT
       - name: Set overall result
         run: |
           set -x
@@ -56,7 +56,7 @@ jobs:
           echo GITHUB_REPOSITORY is ${GITHUB_REPOSITORY}
           echo LAST_COMMIT_SHA is ${LAST_COMMIT_SHA}
  
-          echo "OVERALL_STATUS=$OVERALL_STATUS" >> $GITHUB_ENV
+          echo "OVERALL_STATUS=$OVERALL_STATUS" >> $GITHUB_OUTPUT
 
   notify-slack:
     strategy:
@@ -77,7 +77,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*A test message (6):* ${{ env.OVERALL_STATUS }} - ${{ github.head_ref || github.ref_name }} - ${{ github.event.repository.name }} - ${{ env.PR_LINK }} - ${{ env.LAST_COMMIT_SHA }}"
+                    "text": "*A test message (7):* ${{ needs.just_a_job.outputs.overall_status }} - ${{ github.head_ref || github.ref_name }} - ${{ github.event.repository }} - ${{ needs.just_a_job.outputs.pr_link }} - ${{ needs.just_a_job.outputs.last_commit_sha }}"
                   }
                 }
               ]
