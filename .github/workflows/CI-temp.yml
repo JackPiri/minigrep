@@ -72,7 +72,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*A test message (4):* ${OVERALL_STATUS_BIS} - ${GITHUB_REPOSITORY}"
+                    "text": "*A test message (5):* ${{OVERALL_STATUS_BIS}} - ${{GITHUB_REPOSITORY}}"
                   }
                 }
               ]
