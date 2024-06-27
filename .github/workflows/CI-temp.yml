@@ -74,7 +74,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*A test message (final):* ${{ needs.just-a-job.outputs.overall-status }} - ${{ github.head_ref || github.ref_name }} - ${{ github.event.repository.owner }} - ${{ github.event.repository.name }} - ${{ needs.just-a-job.outputs.pr-link }} - ${{ needs.just-a-job.outputs.last-commit-sha }}"
+                    "text": "*A test message (final):* ${{ needs.just-a-job.outputs.overall-status }} - ${{ github.head_ref || github.ref_name }} - ${{ github.event.repository.owner.name }} - ${{ github.event.repository.name }} - ${{ github.event.repository.full_name }} - ${{ needs.just-a-job.outputs.pr-link }} - ${{ needs.just-a-job.outputs.last-commit-sha }}"
                   }
                 }
               ]
