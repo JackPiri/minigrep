@@ -53,6 +53,15 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
+      - name: Set overall result
+        run: |
+          set -x
+
+          OVERALL_STATUS="success"
+ 
+          echo OVERALL_STATUS is ${OVERALL_STATUS}
+ 
+          echo "OVERALL_STATUS=$OVERALL_STATUS" >> $GITHUB_ENV
       - name: Send Slack Notification
         uses: slackapi/slack-github-action@v1.25.0
         with:
@@ -63,7 +72,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*A test message:* ${{ env.OVERALL_STATUS }} - ${{ env.GITHUB_REPOSITORY }}"
+                    "text": "*A test message (2):* ${{ env.OVERALL_STATUS_BIS }} - ${{ env.GITHUB_REPOSITORY }}"
                   }
                 }
               ]
