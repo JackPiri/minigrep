@@ -15,24 +15,20 @@ env:
   LAST_COMMIT_SHA: ""
 
 jobs:
-  just_a_job:
+  just-a-job:
     strategy:
       matrix:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
+    outputs:
+      overall-status: ${{ steps.set-status.outputs.OVERALL_STATUS }}
+      last-commit-sha: ${{ steps.get-info.outputs.LAST_COMMIT_SHA }}
+      pr-link: ${{ steps.get-info.outputs.PR_LINK }}
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
       - name: Get target PR info
-        run: |
-          BRANCH_NAME=${{ github.head_ref || github.ref_name }}
-          echo BRANCH_NAME is ${BRANCH_NAME}
-          GITHUB_REPOSITORY=${{ github.repository }}
-          echo GITHUB_REPOSITORY is ${GITHUB_REPOSITORY}
-          GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
-          echo GITHUB_REPOSITORY_OWNER is ${GITHUB_REPOSITORY_OWNER}
-
-      - name: Get target PR info
+        id: get-info
         run: |
           BRANCH_NAME=${{ github.head_ref || github.ref_name }}
           echo BRANCH_NAME is ${BRANCH_NAME}
@@ -47,6 +43,7 @@ jobs:
           echo PR_LINK is ${PR_LINK}
           echo "PR_LINK=${PR_LINK}" >> $GITHUB_OUTPUT
       - name: Set overall result
+        id: set-status
         run: |
           set -x
 
@@ -63,7 +60,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
-    needs: [just_a_job]
+    needs: [just-a-job]
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
@@ -77,7 +74,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*A test message (7):* ${{ needs.just_a_job.outputs.overall_status }} - ${{ github.head_ref || github.ref_name }} - ${{ github.event.repository }} - ${{ needs.just_a_job.outputs.pr_link }} - ${{ needs.just_a_job.outputs.last_commit_sha }}"
+                    "text": "*A test message (final):* ${{ needs.just-a-job.outputs.overall-status }} - ${{ github.head_ref || github.ref_name }} - ${{ github.event.repository.owner }} - ${{ github.event.repository.name }} - ${{ needs.just-a-job.outputs.pr-link }} - ${{ needs.just-a-job.outputs.last-commit-sha }}"
                   }
                 }
               ]
