@@ -57,11 +57,11 @@ jobs:
         run: |
           set -x
 
-          OVERALL_STATUS="success"
+          OVERALL_STATUS_BIS="success"
  
-          echo OVERALL_STATUS is ${OVERALL_STATUS}
+          echo OVERALL_STATUS_BIS is ${OVERALL_STATUS_BIS}
  
-          echo "OVERALL_STATUS=$OVERALL_STATUS" >> $GITHUB_ENV
+          echo "OVERALL_STATUS_BIS=$OVERALL_STATUS_BIS" >> $GITHUB_ENV
       - name: Send Slack Notification
         uses: slackapi/slack-github-action@v1.25.0
         with:
@@ -72,7 +72,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*A test message (2):* ${{ env.OVERALL_STATUS_BIS }} - ${{ env.GITHUB_REPOSITORY }}"
+                    "text": "*A test message (3):* ${{ env.OVERALL_STATUS_BIS }} - ${{ env.GITHUB_REPOSITORY }}"
                   }
                 }
               ]
