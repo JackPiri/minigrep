@@ -9,6 +9,10 @@ on:
 
 env:
   RUST_BACKTRACE: 1
+  OVERALL_STATUS: ""
+  PR_LINK: ""
+  BRANCH_NAME: ""
+  LAST_COMMIT_SHA: ""
 
 jobs:
   just_a_job:
@@ -19,6 +23,15 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
+      - name: Get target PR info
+        run: |
+          BRANCH_NAME=${{ github.head_ref || github.ref_name }}
+          echo BRANCH_NAME is ${BRANCH_NAME}
+          GITHUB_REPOSITORY=${{ github.repository }}
+          echo GITHUB_REPOSITORY is ${GITHUB_REPOSITORY}
+          GITHUB_REPOSITORY_OWNER=${{ github.repository_owner }}
+          echo GITHUB_REPOSITORY_OWNER is ${GITHUB_REPOSITORY_OWNER}
+
       - name: Get target PR info
         run: |
           BRANCH_NAME=${{ github.head_ref || github.ref_name }}
@@ -44,6 +57,7 @@ jobs:
           echo LAST_COMMIT_SHA is ${LAST_COMMIT_SHA}
  
           echo "OVERALL_STATUS=$OVERALL_STATUS" >> $GITHUB_ENV
+
   notify-slack:
     strategy:
       matrix:
@@ -53,15 +67,6 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v4
-      - name: Set overall result
-        run: |
-          set -x
-
-          OVERALL_STATUS_BIS="success"
- 
-          echo OVERALL_STATUS_BIS is ${OVERALL_STATUS_BIS}
- 
-          echo "OVERALL_STATUS_BIS=$OVERALL_STATUS_BIS" >> $GITHUB_ENV
       - name: Send Slack Notification
         uses: slackapi/slack-github-action@v1.25.0
         with:
@@ -72,7 +77,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*A test message (5):* ${{OVERALL_STATUS_BIS}} - ${{GITHUB_REPOSITORY}}"
+                    "text": "*A test message (6):* ${{ env.OVERALL_STATUS }} - ${{ github.head_ref || github.ref_name }} - ${{ github.event.repository.name }} - ${{ env.PR_LINK }} - ${{ env.LAST_COMMIT_SHA }}"
                   }
                 }
               ]
