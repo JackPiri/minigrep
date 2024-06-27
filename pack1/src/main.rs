@@ -1,6 +1,6 @@
+use minigrep::*;
 use std::env;
 use std::process;
-use minigrep::*;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -10,7 +10,7 @@ fn main() {
         process::exit(1);
     });
     match run(config) {
-        Ok(_) => {},
+        Ok(_) => {}
         Err(err) => {
             eprintln!("Application error: {}", err);
             process::exit(1);
@@ -24,7 +24,7 @@ mod tests {
 
     #[test]
     fn test_dummy_more() {
-        let x = 2;
-        assert_eq!(x, 2);
+        let x = 4;
+        assert_eq!(x, 4);
     }
 }
